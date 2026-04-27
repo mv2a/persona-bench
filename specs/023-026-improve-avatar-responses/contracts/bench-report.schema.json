@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bible-avatars.djangoai.net/schemas/bench-report.json",
+  "title": "BenchmarkReport",
+  "description": "Output of one `bench/run.py` invocation (spec 026 §2.3).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["run", "results"],
+  "properties": {
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model", "lever_1_applied", "started_at", "finished_at", "prompt_count"],
+      "properties": {
+        "model": { "type": "string", "minLength": 1 },
+        "lever_1_applied": { "type": "boolean" },
+        "started_at": { "type": "string", "format": "date-time" },
+        "finished_at": { "type": "string", "format": "date-time" },
+        "prompt_count": { "type": "integer", "minimum": 0 },
+        "judge_model": { "type": "string" },
+        "ollama_host": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "prompt_id",
+          "model",
+          "lever_1_applied",
+          "response",
+          "scores",
+          "rationale",
+          "timestamp",
+          "latency_ms"
+        ],
+        "properties": {
+          "prompt_id": { "type": "string" },
+          "model": { "type": "string" },
+          "lever_1_applied": { "type": "boolean" },
+          "response": { "type": "string" },
+          "scores": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "persona_fidelity",
+              "biblical_accuracy",
+              "helpfulness",
+              "refusal_appropriateness"
+            ],
+            "properties": {
+              "persona_fidelity": { "type": "integer", "minimum": 0, "maximum": 5 },
+              "biblical_accuracy": { "type": "integer", "minimum": 0, "maximum": 5 },
+              "helpfulness": { "type": "integer", "minimum": 0, "maximum": 5 },
+              "refusal_appropriateness": { "type": "integer", "minimum": 0, "maximum": 5 }
+            }
+          },
+          "rationale": { "type": "string" },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "latency_ms": { "type": "integer", "minimum": 0 },
+          "error": { "type": "string" }
+        }
+      }
+    },
+    "aggregate": {
+      "type": "object",
+      "description": "Optional cross-prompt roll-up written by report.py.",
+      "additionalProperties": true
+    }
+  }
+}
