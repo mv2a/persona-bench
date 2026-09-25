@@ -22,7 +22,7 @@ class _TimingOutPool:
 
 class _FastPool:
     async def call_prompt(self, *_a: Any, **_k: Any) -> str:
-        return "Peace I leave with thee."
+        return "I am Maren Holt, and Skerry Point is my charge."
 
 
 class _StubJudge:
@@ -34,7 +34,7 @@ class _StubJudge:
         return {
             "scores": {
                 "persona_fidelity": 4,
-                "biblical_accuracy": 5,
+                "source_fidelity": 5,
                 "helpfulness": 4,
                 "refusal_appropriateness": 5,
             },
@@ -43,11 +43,11 @@ class _StubJudge:
 
 
 PROMPT = {
-    "id": "jesus-1",
-    "character_slug": "jesus",
-    "category": "doctrinal",
-    "prompt_text": "Who do you say that you are?",
-    "expected_description": "First-person I AM.",
+    "id": "keeper-1",
+    "character_slug": "keeper",
+    "category": "in-character",
+    "prompt_text": "Who are you, and where do you keep watch?",
+    "expected_description": "First person: Maren Holt, keeper of the Skerry Point light.",
 }
 
 
@@ -64,7 +64,7 @@ async def test_timeout_records_error_and_zero_scores() -> None:
     assert result["response"] == ""
     assert result["scores"] == {
         "persona_fidelity": 0,
-        "biblical_accuracy": 0,
+        "source_fidelity": 0,
         "helpfulness": 0,
         "refusal_appropriateness": 0,
     }
@@ -81,7 +81,8 @@ async def test_success_path_invokes_judge_and_records_latency() -> None:
         ollama=_FastPool(),
         score=judge,
     )
-    assert result["response"] == "Peace I leave with thee."
+    assert result["response"] == "I am Maren Holt, and Skerry Point is my charge."
+    assert result["character_slug"] == "keeper"
     assert result["scores"]["persona_fidelity"] == 4
     assert result["latency_ms"] >= 0
     assert "error" not in result or not result["error"]
@@ -103,7 +104,7 @@ async def test_run_continues_across_mixed_success_and_failure() -> None:
 
     pool = _Flaky()
     prompts = [
-        {**PROMPT, "id": f"jesus-{i}"} for i in range(1, 4)
+        {**PROMPT, "id": f"keeper-{i}"} for i in range(1, 4)
     ]
     results = []
     for p in prompts:
@@ -137,3 +138,16 @@ async def test_asyncio_cancelled_does_not_become_error() -> None:
             ollama=_Cancelling(),
             score=_StubJudge(),
         )
+
+
+async def test_timeout_records_the_given_rubric_zeros() -> None:
+    result = await run.evaluate_prompt(
+        prompt=PROMPT,
+        model="llama3.1:8b",
+        lever_1_applied=False,
+        ollama=_TimingOutPool(),
+        score=_StubJudge(),
+        zero_scores={"clarity": 0, "accuracy": 0},
+    )
+    assert result["scores"] == {"clarity": 0, "accuracy": 0}
+    assert result["character_slug"] == "keeper"

@@ -25,9 +25,24 @@ def _load(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _dimensions(results: list[dict[str, Any]]) -> tuple[str, ...]:
+    """The dimensions a report was scored on, in the order its first result lists them.
+
+    Reports scored against a custom rubric carry that rubric's dimensions; an empty
+    report falls back to the default rubric's."""
+    for r in results:
+        if r.get("scores"):
+            return tuple(r["scores"])
+    return DIMENSIONS
+
+
+def _slug(result: dict[str, Any]) -> str:
+    return result.get("character_slug") or result["prompt_id"].split("-", 1)[0]
+
+
 def _per_dimension_means(results: list[dict[str, Any]]) -> dict[str, float]:
     out: dict[str, float] = {}
-    for dim in DIMENSIONS:
+    for dim in _dimensions(results):
         vals = [r["scores"].get(dim, 0) for r in results]
         out[dim] = round(statistics.mean(vals), 2) if vals else 0.0
     return out
@@ -36,12 +51,12 @@ def _per_dimension_means(results: list[dict[str, Any]]) -> dict[str, float]:
 def _per_character_means(results: list[dict[str, Any]]) -> dict[str, dict[str, float]]:
     buckets: dict[str, list[dict[str, int]]] = defaultdict(list)
     for r in results:
-        slug = r["prompt_id"].split("-", 1)[0]
-        buckets[slug].append(r["scores"])
+        buckets[_slug(r)].append(r["scores"])
+    dims = _dimensions(results)
     out: dict[str, dict[str, float]] = {}
     for slug, rows in sorted(buckets.items()):
         per_dim = {}
-        for dim in DIMENSIONS:
+        for dim in dims:
             vals = [row.get(dim, 0) for row in rows]
             per_dim[dim] = round(statistics.mean(vals), 2) if vals else 0.0
         out[slug] = per_dim
@@ -66,7 +81,7 @@ def summarize(report: dict[str, Any]) -> dict[str, Any]:
 
 def _fmt_dim_table(header: str, row: dict[str, float]) -> list[str]:
     lines = [f"### {header}", "", "| dimension | mean |", "|---|---|"]
-    for dim in DIMENSIONS:
+    for dim in row:
         lines.append(f"| {dim} | {row.get(dim, 0):.2f} |")
     lines.append("")
     return lines
@@ -85,12 +100,13 @@ def render_markdown(report: dict[str, Any]) -> str:
         f"- judge_model: {run.get('judge_model', '?')}",
         "",
     ]
+    dims = tuple(s["per_dimension_mean"])
     lines += _fmt_dim_table("Per-dimension mean", s["per_dimension_mean"])
     lines += ["## Per-character mean", ""]
-    lines += ["| character | " + " | ".join(DIMENSIONS) + " |"]
-    lines += ["|" + "---|" * (len(DIMENSIONS) + 1)]
+    lines += ["| character | " + " | ".join(dims) + " |"]
+    lines += ["|" + "---|" * (len(dims) + 1)]
     for slug, row in s["per_character_mean"].items():
-        cells = [f"{row.get(dim, 0):.2f}" for dim in DIMENSIONS]
+        cells = [f"{row.get(dim, 0):.2f}" for dim in dims]
         lines.append(f"| {slug} | " + " | ".join(cells) + " |")
     lines.append("")
     return "\n".join(lines)
@@ -109,7 +125,8 @@ def render_diff(report_a: dict[str, Any], report_b: dict[str, Any]) -> str:
         "| dimension | A | B | Δ |",
         "|---|---|---|---|",
     ]
-    for dim in DIMENSIONS:
+    dims = tuple(dict.fromkeys((*a["per_dimension_mean"], *b["per_dimension_mean"])))
+    for dim in dims:
         av = a["per_dimension_mean"].get(dim, 0.0)
         bv = b["per_dimension_mean"].get(dim, 0.0)
         lines.append(f"| {dim} | {av:.2f} | {bv:.2f} | {bv - av:+.2f} |")
@@ -121,12 +138,12 @@ def render_diff(report_a: dict[str, Any], report_b: dict[str, Any]) -> str:
         row_a = a["per_character_mean"].get(slug, {})
         row_b = b["per_character_mean"].get(slug, {})
         avg_a = (
-            round(statistics.mean([row_a.get(d, 0) for d in DIMENSIONS]), 2)
+            round(statistics.mean([row_a.get(d, 0) for d in dims]), 2)
             if row_a
             else 0.0
         )
         avg_b = (
-            round(statistics.mean([row_b.get(d, 0) for d in DIMENSIONS]), 2)
+            round(statistics.mean([row_b.get(d, 0) for d in dims]), 2)
             if row_b
             else 0.0
         )
@@ -136,7 +153,7 @@ def render_diff(report_a: dict[str, Any], report_b: dict[str, Any]) -> str:
 
 
 def _build_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(description="bible-avatars bench report renderer")
+    p = argparse.ArgumentParser(description="persona-bench report renderer")
     p.add_argument("report", nargs="?", help="Path to a single report JSON.")
     p.add_argument(
         "--diff",

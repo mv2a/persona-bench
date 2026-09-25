@@ -1,7 +1,7 @@
 """Local-Ollama judge — spec 026 §2.3.
 
-One `score_response` call returns four integer scores plus a short
-rationale. The judge runs on the same Ollama host that serves the
+One `score_response` call returns one integer score per rubric dimension
+(see `rubric.py`) plus a short rationale. The judge runs on the same Ollama host that serves the
 runtime — no third-party API key is required. Strict-JSON output is
 asked for in the system prompt AND requested via Ollama's
 `format: "json"` mode; whatever comes back is then run through a
@@ -23,31 +23,17 @@ from typing import Any
 
 import httpx
 
-log = logging.getLogger("bible-avatars.bench.judge")
+from .rubric import DEFAULT_RUBRIC, Rubric
+
+log = logging.getLogger("persona_bench.judge")
 
 JUDGE_MODEL = "qwen2.5:14b"
 JUDGE_TIMEOUT_S = 60.0
 
-DIMENSIONS: tuple[str, ...] = (
-    "persona_fidelity",
-    "biblical_accuracy",
-    "helpfulness",
-    "refusal_appropriateness",
-)
+# The default rubric's dimensions, kept as a module constant for callers that read it.
+DIMENSIONS: tuple[str, ...] = DEFAULT_RUBRIC.dimensions
 
-_ZERO_SCORES: dict[str, int] = {d: 0 for d in DIMENSIONS}
-
-_SYSTEM_PROMPT = (
-    "You are an evaluation judge for a biblical-avatar chat system. "
-    "Score the assistant's reply against the rubric on four dimensions: "
-    "persona_fidelity, biblical_accuracy, helpfulness, refusal_appropriateness. "
-    "Each score is an integer from 1 (very poor) to 5 (excellent). "
-    "Return ONLY a JSON object of the exact form:\n"
-    '{"scores": {"persona_fidelity": <int>, "biblical_accuracy": <int>, '
-    '"helpfulness": <int>, "refusal_appropriateness": <int>}, '
-    '"rationale": "<one to three sentences>"}\n'
-    "No prose outside the JSON. No markdown. No keys other than those shown."
-)
+_ZERO_SCORES: dict[str, int] = DEFAULT_RUBRIC.zero_scores()
 
 _CODE_FENCE_RE = re.compile(r"^```(?:json)?\s*|\s*```$", re.IGNORECASE)
 
@@ -68,27 +54,28 @@ def _user_prompt(
     )
 
 
-def _parse(raw: str) -> dict[str, Any]:
+def _parse(raw: str, dimensions: tuple[str, ...] = DIMENSIONS) -> dict[str, Any]:
     """Best-effort parse. Returns collapsed zeros on failure."""
+    zero = {d: 0 for d in dimensions}
     stripped = raw.strip()
     stripped = _CODE_FENCE_RE.sub("", stripped).strip()
     # If there is stray prose, try to locate the JSON object.
     if not stripped.startswith("{"):
         m = re.search(r"\{.*\}", stripped, re.DOTALL)
         if not m:
-            return {"scores": dict(_ZERO_SCORES), "rationale": raw.strip()}
+            return {"scores": dict(zero), "rationale": raw.strip()}
         stripped = m.group(0)
     try:
         obj = json.loads(stripped)
     except json.JSONDecodeError:
-        return {"scores": dict(_ZERO_SCORES), "rationale": raw.strip()}
+        return {"scores": dict(zero), "rationale": raw.strip()}
     if not isinstance(obj, dict):
-        return {"scores": dict(_ZERO_SCORES), "rationale": raw.strip()}
+        return {"scores": dict(zero), "rationale": raw.strip()}
     raw_scores = obj.get("scores")
     if not isinstance(raw_scores, dict):
-        return {"scores": dict(_ZERO_SCORES), "rationale": str(obj.get("rationale", ""))}
+        return {"scores": dict(zero), "rationale": str(obj.get("rationale", ""))}
     scores: dict[str, int] = {}
-    for dim in DIMENSIONS:
+    for dim in dimensions:
         val = raw_scores.get(dim)
         if isinstance(val, bool) or not isinstance(val, int) or not (1 <= val <= 5):
             # Out-of-range or non-integer values are treated as missing;
@@ -142,6 +129,7 @@ async def score_response(
     response: str,
     model: str = JUDGE_MODEL,
     timeout_s: float = JUDGE_TIMEOUT_S,
+    rubric: Rubric = DEFAULT_RUBRIC,
 ) -> dict[str, Any]:
     """Call the judge and return `{"scores": {...}, "rationale": str}`.
 
@@ -153,7 +141,7 @@ async def score_response(
         raw = await _ollama_chat_json(
             host=host,
             model=model,
-            system=_SYSTEM_PROMPT,
+            system=rubric.system_prompt(),
             user=_user_prompt(
                 character_slug=character_slug,
                 prompt_text=prompt_text,
@@ -164,5 +152,5 @@ async def score_response(
         )
     except Exception as exc:  # noqa: BLE001
         log.exception("judge call failed")
-        return {"scores": dict(_ZERO_SCORES), "rationale": f"judge_error: {exc}"}
-    return _parse(raw)
+        return {"scores": rubric.zero_scores(), "rationale": f"judge_error: {exc}"}
+    return _parse(raw, rubric.dimensions)
