@@ -329,7 +329,7 @@ def _build_parser() -> argparse.ArgumentParser:
     p.add_argument(
         "--judge-model",
         default=None,
-        help="Ollama model used as the judge (default: bench.judge.JUDGE_MODEL).",
+        help="Ollama model used as the judge (default: persona_bench.judge.JUDGE_MODEL).",
     )
     p.add_argument(
         "--judge-host",
@@ -340,7 +340,7 @@ def _build_parser() -> argparse.ArgumentParser:
         "--judge-timeout-s",
         type=float,
         default=None,
-        help="Per-judge-call timeout in seconds (default: bench.judge.JUDGE_TIMEOUT_S).",
+        help="Per-judge-call timeout in seconds (default: persona_bench.judge.JUDGE_TIMEOUT_S).",
     )
     return p
 

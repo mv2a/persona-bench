@@ -3,13 +3,35 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
+# Working name; the public name is undecided.
 name = "persona-bench"
 version = "0.1.0"
+description = "Score persona chat models with a local LLM judge against a configurable rubric."
+readme = "README.md"
 requires-python = ">=3.11"
+# No licence has been granted yet. LICENSE says so; this changes when one is chosen.
+license = {text = "UNLICENSED - no licence granted yet; see LICENSE"}
+authors = [{name = "Tiago Miranda de Leão"}]
+keywords = ["llm-evaluation", "llm-as-judge", "persona", "ollama", "benchmark"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    # PyPI refuses any upload carrying a "Private ::" classifier. Remove at release.
+    "Private :: Do Not Upload",
+]
 dependencies = ["httpx>=0.27"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8", "pytest-asyncio>=0.24", "jsonschema>=4.23"]
+
+[project.scripts]
+persona-bench = "persona_bench.run:main"
+persona-bench-report = "persona_bench.report:main"
 
 [tool.setuptools]
 packages = ["persona_bench"]

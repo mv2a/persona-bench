@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software, please cite it using these metadata. It has not been
+  released yet; the release version, date, licence and DOI will be added at release.
+type: software
+title: "persona-bench (working title): scoring persona chat models with a local LLM judge against a configurable rubric"
+abstract: >-
+  A harness that sends prompts to a local model under persona system prompts, has a
+  second local model score each reply against a configurable rubric, collapsing any
+  violation of the judge's output contract to zero, and writes schema-validated reports
+  that can be summarised and compared across runs. Extracted with its development
+  history from a private application; the underlying development took place privately
+  on 27 April 2026.
+authors:
+  - given-names: Tiago Miranda
+    name-particle: de
+    family-names: Leão
+keywords:
+  - LLM evaluation
+  - LLM-as-judge
+  - persona
+  - Ollama
+  - benchmark
+version: 0.1.0
