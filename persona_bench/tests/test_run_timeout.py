@@ -12,7 +12,7 @@ from typing import Any
 
 import pytest
 
-from bench import run
+from persona_bench import run
 
 
 class _TimingOutPool:

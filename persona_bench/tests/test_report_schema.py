@@ -12,13 +12,7 @@ from pathlib import Path
 
 import jsonschema
 
-SCHEMA_PATH = (
-    Path(__file__).resolve().parents[4]
-    / "specs"
-    / "023-026-improve-avatar-responses"
-    / "contracts"
-    / "bench-report.schema.json"
-)
+SCHEMA_PATH = Path(__file__).resolve().parents[2] / "schemas" / "bench-report.schema.json"
 
 
 def _schema() -> dict:

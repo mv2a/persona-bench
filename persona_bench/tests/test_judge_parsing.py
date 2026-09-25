@@ -10,7 +10,7 @@ from typing import Any
 
 import pytest
 
-from bench import judge
+from persona_bench import judge
 
 
 def _stub_chat(reply_text: str):
