@@ -6,7 +6,7 @@ import json
 
 import pytest
 
-from persona_bench.rubric import DEFAULT_RUBRIC, Rubric, load_rubric
+from persona_rubric_bench.rubric import DEFAULT_RUBRIC, Rubric, load_rubric
 
 
 def test_default_rubric_keeps_the_original_four_dimension_shape() -> None:

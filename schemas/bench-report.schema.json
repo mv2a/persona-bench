@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "BenchmarkReport",
-  "description": "Output of one `persona_bench.run` invocation (spec 026 §2.3). Scores are keyed by the rubric's dimensions.",
+  "description": "Output of one `persona_rubric_bench.run` invocation (spec 026 §2.3). Scores are keyed by the rubric's dimensions.",
   "type": "object",
   "additionalProperties": false,
   "required": [

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from persona_bench import report
+from persona_rubric_bench import report
 
 
 def _result(pid: str, slug: str | None, scores: dict[str, int]) -> dict:

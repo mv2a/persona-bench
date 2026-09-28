@@ -24,7 +24,7 @@ from typing import Any, Protocol
 
 from .rubric import DEFAULT_RUBRIC, Rubric, load_rubric
 
-log = logging.getLogger("persona_bench.run")
+log = logging.getLogger("persona_rubric_bench.run")
 
 DEFAULT_TIMEOUT_S = 30.0
 ZERO_SCORES = DEFAULT_RUBRIC.zero_scores()
@@ -281,7 +281,7 @@ async def _run_cli(args: argparse.Namespace) -> int:
 
 
 def _build_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(description="persona-bench: score persona replies with a local judge")
+    p = argparse.ArgumentParser(description="persona-rubric-bench: score persona replies with a local judge")
     p.add_argument("--model", required=True, help="Ollama model tag, e.g. llama3.1:8b")
     p.add_argument(
         "--output",
@@ -329,7 +329,7 @@ def _build_parser() -> argparse.ArgumentParser:
     p.add_argument(
         "--judge-model",
         default=None,
-        help="Ollama model used as the judge (default: persona_bench.judge.JUDGE_MODEL).",
+        help="Ollama model used as the judge (default: persona_rubric_bench.judge.JUDGE_MODEL).",
     )
     p.add_argument(
         "--judge-host",
@@ -340,7 +340,7 @@ def _build_parser() -> argparse.ArgumentParser:
         "--judge-timeout-s",
         type=float,
         default=None,
-        help="Per-judge-call timeout in seconds (default: persona_bench.judge.JUDGE_TIMEOUT_S).",
+        help="Per-judge-call timeout in seconds (default: persona_rubric_bench.judge.JUDGE_TIMEOUT_S).",
     )
     return p
 

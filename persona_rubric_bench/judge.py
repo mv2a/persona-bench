@@ -25,7 +25,7 @@ import httpx
 
 from .rubric import DEFAULT_RUBRIC, Rubric
 
-log = logging.getLogger("persona_bench.judge")
+log = logging.getLogger("persona_rubric_bench.judge")
 
 JUDGE_MODEL = "qwen2.5:14b"
 JUDGE_TIMEOUT_S = 60.0

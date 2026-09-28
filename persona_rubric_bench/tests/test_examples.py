@@ -14,8 +14,8 @@ from typing import Any
 
 import jsonschema
 
-from persona_bench import judge, run
-from persona_bench.rubric import DEFAULT_RUBRIC, load_rubric
+from persona_rubric_bench import judge, run
+from persona_rubric_bench.rubric import DEFAULT_RUBRIC, load_rubric
 
 ROOT = Path(__file__).resolve().parents[2]
 EXAMPLES = ROOT / "examples"

@@ -10,7 +10,7 @@ from typing import Any
 
 import pytest
 
-from persona_bench import judge
+from persona_rubric_bench import judge
 
 
 def _stub_chat(reply_text: str):
@@ -134,7 +134,7 @@ async def test_transport_error_collapses_to_zero(
 async def test_custom_rubric_drives_prompt_and_parsing(
     monkeypatch: pytest.MonkeyPatch, sample_inputs: dict[str, str]
 ) -> None:
-    from persona_bench.rubric import Rubric
+    from persona_rubric_bench.rubric import Rubric
 
     rubric = Rubric(name="two", dimensions=("clarity", "accuracy"), context="a tutoring bot")
     seen: dict[str, str] = {}
@@ -153,7 +153,7 @@ async def test_custom_rubric_drives_prompt_and_parsing(
 async def test_custom_rubric_transport_error_collapses_to_its_zeros(
     monkeypatch: pytest.MonkeyPatch, sample_inputs: dict[str, str]
 ) -> None:
-    from persona_bench.rubric import Rubric
+    from persona_rubric_bench.rubric import Rubric
 
     async def _boom(**_kw: Any) -> str:
         raise RuntimeError("down")

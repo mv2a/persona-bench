@@ -153,7 +153,7 @@ def render_diff(report_a: dict[str, Any], report_b: dict[str, Any]) -> str:
 
 
 def _build_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(description="persona-bench report renderer")
+    p = argparse.ArgumentParser(description="persona-rubric-bench report renderer")
     p.add_argument("report", nargs="?", help="Path to a single report JSON.")
     p.add_argument(
         "--diff",

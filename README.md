@@ -1,11 +1,13 @@
-# persona-bench
+# persona-rubric-bench
 
 A small harness for scoring persona chat models. It sends each prompt to a local model
 under a persona's system prompt, asks a second local model to score the reply against a
 rubric, and writes a JSON report that can be summarised, or compared with another run.
 
-> **Status: research software, version 0.1.0, first released publicly on 28 September 2026
-> under the [Apache License 2.0](LICENSE).**
+> **Status: research software, version 0.1.1, under the [Apache License 2.0](LICENSE). First
+> released publicly as 0.1.0 on 28 September 2026 under the name persona-bench. Renamed the same
+> day to avoid confusion with SynthLabs' unrelated
+> [PERSONA-bench](https://github.com/SynthLabsAI/PERSONA-bench).**
 
 ## How it works
 
@@ -16,7 +18,7 @@ rubric.json ───┘         system prompt from the persona         scored a
                                                                           │
                                            report.json ◄──────────────────┘
                                                 │
-                              persona-bench-report  ─►  markdown summary, or A-versus-B diff
+                              persona-rubric-bench-report  ─►  markdown summary, or A-versus-B diff
 ```
 
 - **Personas** (`examples/personas.json`): each has a `system_prompt`, and optionally a
@@ -26,12 +28,12 @@ rubric.json ───┘         system prompt from the persona         scored a
 - **Rubric** (`examples/rubric.json`, which is also the built-in default): the dimensions
   the judge scores from 1 to 5. The default has four: `persona_fidelity`,
   `source_fidelity`, `helpfulness` and `refusal_appropriateness`.
-- **Judge** (`persona_bench/judge.py`): a local Ollama model, `qwen2.5:14b` by default,
+- **Judge** (`persona_rubric_bench/judge.py`): a local Ollama model, `qwen2.5:14b` by default,
   deliberately stronger than a typical target. It is asked for strict JSON. Anything it
   returns that breaks the contract (non-JSON output, missing dimensions, out-of-range
   values, transport errors) collapses to 0 for the affected dimensions rather than being
   guessed at.
-- **Runner** (`persona_bench/run.py`): one prompt at a time, each with its own timeout. A
+- **Runner** (`persona_rubric_bench/run.py`): one prompt at a time, each with its own timeout. A
   timeout or model error becomes an error-tagged result with zero scores, and the run
   continues.
 - **Report** (`schemas/bench-report.schema.json`): per-prompt results, with the reply, the
@@ -55,16 +57,16 @@ Running a benchmark needs [Ollama](https://ollama.com) with the target and judge
 pulled:
 
 ```bash
-persona-bench --model llama3.1:8b \
+persona-rubric-bench --model llama3.1:8b \
   --prompts examples/prompts.json --personas examples/personas.json \
   --output runs/llama31-scaffold.json
 
-persona-bench --model llama3.1:8b --no-scaffold \
+persona-rubric-bench --model llama3.1:8b --no-scaffold \
   --prompts examples/prompts.json --personas examples/personas.json \
   --output runs/llama31-baseline.json
 
-persona-bench-report runs/llama31-scaffold.json
-persona-bench-report --diff runs/llama31-baseline.json runs/llama31-scaffold.json
+persona-rubric-bench-report runs/llama31-scaffold.json
+persona-rubric-bench-report --diff runs/llama31-baseline.json runs/llama31-scaffold.json
 ```
 
 Options: `--rubric` (a rubric JSON), `--characters` (a subset of personas),

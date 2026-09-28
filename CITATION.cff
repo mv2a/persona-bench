@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: If you use this software, please cite it using these metadata.
 type: software
-title: "persona-bench: scoring persona chat models with a local LLM judge against a configurable rubric"
+title: "persona-rubric-bench: scoring persona chat models with a local LLM judge against a configurable rubric"
 abstract: >-
   A harness that sends prompts to a local model under persona system prompts, has a
   second local model score each reply against a configurable rubric, collapsing any
@@ -19,7 +19,7 @@ keywords:
   - persona
   - Ollama
   - benchmark
-version: 0.1.0
+version: 0.1.1
 date-released: 2026-09-28
 license: Apache-2.0
-repository-code: https://github.com/mv2a/persona-bench
+repository-code: https://github.com/mv2a/persona-rubric-bench

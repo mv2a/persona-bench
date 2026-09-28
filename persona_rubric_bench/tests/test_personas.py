@@ -10,7 +10,7 @@ import json
 import httpx
 import pytest
 
-from persona_bench.run import _HttpxOllama, load_personas
+from persona_rubric_bench.run import _HttpxOllama, load_personas
 
 PERSONAS = {
     "keeper": {

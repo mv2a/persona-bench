@@ -3,8 +3,8 @@ requires = ["setuptools>=77.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "persona-bench"
-version = "0.1.0"
+name = "persona-rubric-bench"
+version = "0.1.1"
 description = "Score persona chat models with a local LLM judge against a configurable rubric."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -30,13 +30,13 @@ dependencies = ["httpx>=0.27"]
 dev = ["pytest>=8", "pytest-asyncio>=0.24", "jsonschema>=4.23"]
 
 [project.scripts]
-persona-bench = "persona_bench.run:main"
-persona-bench-report = "persona_bench.report:main"
+persona-rubric-bench = "persona_rubric_bench.run:main"
+persona-rubric-bench-report = "persona_rubric_bench.report:main"
 
 [tool.setuptools]
-packages = ["persona_bench"]
+packages = ["persona_rubric_bench"]
 
 [tool.pytest.ini_options]
-testpaths = ["persona_bench/tests"]
+testpaths = ["persona_rubric_bench/tests"]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"

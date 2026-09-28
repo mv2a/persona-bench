@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.1: 28 September 2026
+
+### Changed
+- Renamed from persona-bench to **persona-rubric-bench**: the repository, the distribution,
+  the import package (`persona_bench` → `persona_rubric_bench`, one `git mv`, so the history
+  follows) and the console scripts (`persona-rubric-bench`, `persona-rubric-bench-report`).
+  The old name belongs to SynthLabs' unrelated PERSONA-bench, an LLM alignment benchmark
+  that also holds `persona-bench` on PyPI. The old GitHub URL redirects. No behaviour
+  changed.
+
 ## 0.1.0: first public release, 28 September 2026
 
 Licensed under the Apache License 2.0. Extracted on 25 September 2026.
