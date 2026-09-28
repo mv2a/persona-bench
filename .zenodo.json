@@ -1,9 +1,19 @@
 {
-  "title": "persona-bench (working title): scoring persona chat models with a local LLM judge against a configurable rubric",
+  "title": "persona-bench: scoring persona chat models with a local LLM judge against a configurable rubric",
   "upload_type": "software",
-  "description": "<p>A harness that sends prompts to a local model under persona system prompts, has a second local model score each reply against a configurable rubric (collapsing any violation of the judge's output contract to zero), and writes schema-validated reports that can be summarised and compared across runs.</p><p>Extracted with its development history from a private application. The underlying development took place privately on 27 April 2026, and the repository was extracted on 25 September 2026. The public release date is the date of this record. Development was AI-assisted; see the README's AI-assistance section.</p>",
-  "creators": [{"name": "Leão, Tiago Miranda de"}],
-  "keywords": ["LLM evaluation", "LLM-as-judge", "persona", "Ollama", "benchmark"],
+  "description": "<p>A harness that sends prompts to a local model under persona system prompts, has a second local model score each reply against a configurable rubric (collapsing any violation of the judge's output contract to zero), and writes schema-validated reports that can be summarised and compared across runs.</p><p>Extracted with its development history from a private application. The underlying development took place privately on 27 April 2026, the repository was extracted on 25 September 2026, and it was first released publicly on 28 September 2026. Development was AI-assisted; see the README's AI-assistance section.</p>",
+  "creators": [
+    {
+      "name": "Leão, Tiago Miranda de"
+    }
+  ],
+  "keywords": [
+    "LLM evaluation",
+    "LLM-as-judge",
+    "persona",
+    "Ollama",
+    "benchmark"
+  ],
   "language": "eng",
-  "notes": "Pre-release metadata. Before the first release, add the licence identifier, and an ORCID for the creator if one exists."
+  "license": "Apache-2.0"
 }

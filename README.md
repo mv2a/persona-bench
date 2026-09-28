@@ -1,12 +1,11 @@
-# persona-bench (working name)
+# persona-bench
 
 A small harness for scoring persona chat models. It sends each prompt to a local model
 under a persona's system prompt, asks a second local model to score the reply against a
 rubric, and writes a JSON report that can be summarised, or compared with another run.
 
-> **Status: pre-release research software. No licence has been granted yet** (see
-> [LICENSE](LICENSE)). The public name, the licence and the release date are still to be
-> decided.
+> **Status: research software, version 0.1.0, first released publicly on 28 September 2026
+> under the [Apache License 2.0](LICENSE).**
 
 ## How it works
 
@@ -82,7 +81,8 @@ extraction kept only the harness and its report schema, with their original comm
 |---|---|
 | The harness written, in private | **27 April 2026** (3 commits, 17:26 to 19:58 US Eastern) |
 | Extraction and preparation for release | from 25 September 2026 (commits after `9c143b6`) |
-| First public release | **not yet released** |
+| GitHub repository created (private) | 25 September 2026 |
+| First public release | **28 September 2026** (v0.1.0) |
 
 The three historical commits are the harness's first commit; a commit to the same
 application that accidentally deleted it through a squash-merge race; and the commit

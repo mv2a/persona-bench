@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased: extraction, 25 September 2026
+## 0.1.0: first public release, 28 September 2026
+
+Licensed under the Apache License 2.0. Extracted on 25 September 2026.
 
 The history up to commit `9c143b6` (27 April 2026) is the historical record of the
 harness. Everything below was done on or after 25 September 2026.
@@ -23,5 +25,5 @@ harness. Everything below was done on or after 25 September 2026.
 - Tests for the rubric, the personas adapter, the renderer and the examples, and an
   offline end-to-end run of the CLI. Pytest now runs the historical async tests, which
   had been skipped: 39 tests in all.
-- README with provenance, AI-assistance disclosure and limitations; LICENSE placeholder;
+- README with provenance, AI-assistance disclosure and limitations; LICENSE (Apache-2.0) and NOTICE;
   CITATION.cff; .zenodo.json; packaging with console scripts; CI.
