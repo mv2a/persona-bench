@@ -12,6 +12,7 @@ abstract: >-
 authors:
   - given-names: Tiago
     family-names: Miranda de Leao
+    orcid: "https://orcid.org/0009-0003-6386-5941"
 keywords:
   - LLM evaluation
   - LLM-as-judge
