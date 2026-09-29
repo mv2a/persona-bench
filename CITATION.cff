@@ -10,9 +10,8 @@ abstract: >-
   history from a private application; the underlying development took place privately
   on 27 April 2026.
 authors:
-  - given-names: Tiago Miranda
-    name-particle: de
-    family-names: Leão
+  - given-names: Tiago
+    family-names: Miranda de Leão
 keywords:
   - LLM evaluation
   - LLM-as-judge

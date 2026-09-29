@@ -4,7 +4,7 @@
   "description": "<p>A harness that sends prompts to a local model under persona system prompts, has a second local model score each reply against a configurable rubric (collapsing any violation of the judge's output contract to zero), and writes schema-validated reports that can be summarised and compared across runs.</p><p>Extracted with its development history from a private application. The underlying development took place privately on 27 April 2026, the repository was extracted on 25 September 2026, and it was first released publicly on 28 September 2026. Development was AI-assisted; see the README's AI-assistance section.</p>",
   "creators": [
     {
-      "name": "Leão, Tiago Miranda de"
+      "name": "Miranda de Leão, Tiago"
     }
   ],
   "keywords": [
