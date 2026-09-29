@@ -11,7 +11,7 @@ abstract: >-
   on 27 April 2026.
 authors:
   - given-names: Tiago
-    family-names: Miranda de Leão
+    family-names: Miranda de Leao
 keywords:
   - LLM evaluation
   - LLM-as-judge
