@@ -4,7 +4,7 @@ A small harness for scoring persona chat models. It sends each prompt to a local
 under a persona's system prompt, asks a second local model to score the reply against a
 rubric, and writes a JSON report that can be summarised, or compared with another run.
 
-> **Status: research software, version 0.1.1, under the [Apache License 2.0](LICENSE). First
+> **Status: research software, version 0.1.2, under the [Apache License 2.0](LICENSE). First
 > released publicly as 0.1.0 on 28 September 2026 under the name persona-bench. Renamed the same
 > day to avoid confusion with SynthLabs' unrelated
 > [PERSONA-bench](https://github.com/SynthLabsAI/PERSONA-bench).**

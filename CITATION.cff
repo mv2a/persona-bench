@@ -19,7 +19,7 @@ keywords:
   - persona
   - Ollama
   - benchmark
-version: 0.1.1
-date-released: 2026-09-28
+version: 0.1.2
+date-released: 2026-09-29
 license: Apache-2.0
 repository-code: https://github.com/mv2a/persona-rubric-bench

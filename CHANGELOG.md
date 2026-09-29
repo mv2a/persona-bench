@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2: 29 September 2026
+
+Version metadata only, cut so that the release can be archived. The Zenodo integration was
+switched on after 0.1.1, and Zenodo archives only releases published after that, so this
+is the first release with a DOI. No code changes since 0.1.1.
+
 ## 0.1.1: 28 September 2026
 
 ### Changed
