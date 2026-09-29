@@ -133,4 +133,4 @@ and the choice of a stronger local judge than the model under test.
 
 ## Citing
 
-See [CITATION.cff](CITATION.cff). The software has no DOI yet.
+See [CITATION.cff](CITATION.cff). The software is archived on Zenodo: [10.5281/zenodo.23029797](https://doi.org/10.5281/zenodo.23029797) covers all versions, and v0.1.2 is [10.5281/zenodo.23029798](https://doi.org/10.5281/zenodo.23029798).

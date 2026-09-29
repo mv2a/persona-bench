@@ -21,5 +21,6 @@ keywords:
   - benchmark
 version: 0.1.2
 date-released: 2026-09-29
+doi: 10.5281/zenodo.23029797
 license: Apache-2.0
 repository-code: https://github.com/mv2a/persona-rubric-bench
